@@ -25,7 +25,7 @@ jobs:
             "block")
               echo "comment=@$AUTHOR Due to a violation of our contributing guidelines, you are now blocked. Please review n8n's [contributing](${{ env.CONTRIBUTING_LINK }}) guidelines." >> $GITHUB_OUTPUT
               echo "should_close=true" >> $GITHUB_OUTPUT
-              curl -X GET https://api.github.com/orgs/${{ env.ORG_NAME }}/blocks/$AUTHOR
+              curl -X GET "https://api.github.com/orgs/${{ env.ORG_NAME }}/blocks/$AUTHOR"
               ;;
             "spam")
               echo "comment=@$AUTHOR This appears to be spam. Please review n8n's [contributing](${{ env.CONTRIBUTING_LINK }}) guidelines." >> $GITHUB_OUTPUT
