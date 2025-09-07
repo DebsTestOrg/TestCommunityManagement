@@ -57,13 +57,24 @@ jobs:
               echo "should_close=true" >> $GITHUB_OUTPUT
               ;;
             "low-effort-usable")
-              echo "comment=@${{ env.AUTHOR }} Thank you for contributing. This is a minor contribution, but good quality. Please review n8n's [contributing](${{ env.CONTRIBUTING_LINK }}) guidelines, and keep low-effort contributions to a minimum." >> $GITHUB_OUTPUT
-              echo "should_close=false" >> $GITHUB_OUTPUT
-              curl -X POST \
+              response=$(curl -s -X POST \
               -u "${{ secrets.WEBHOOK_USER}}:${{ secrets.WEBHOOK_PASSWORD }}" \
               -H "Content-Type: application/json" \
               -d '{"user": "${{ env.AUTHOR }}"}' \
-              "https://n8n.deborahwrites.com/webhook-test/github-moderation-blocklist"
+              "https://n8n.deborahwrites.com/webhook-test/github-moderation-blocklist")
+              if [ "$response" = "true" ]; then
+                echo "should_close=true" >> $GITHUB_OUTPUT
+                echo "comment=@${{ env.AUTHOR }} Thank you for contributing. This is a minor contribution, but good quality. However, due to multiple low-effort contributions, you are now blocked. Please review n8n's [contributing](${{ env.CONTRIBUTING_LINK }}) guidelines to understand more" >> $GITHUB_OUTPUT
+                curl -L \
+                -X PUT \
+                -H "Accept: application/vnd.github+json" \
+                -H "Authorization: Bearer ${{ secrets.ORG_TOKEN }}" \
+                -H "X-GitHub-Api-Version: 2022-11-28" \
+                "https://api.github.com/orgs/${{ env.ORG_NAME }}/blocks/${{ env.AUTHOR }}"
+              if [ "$response" = "false" ]; then
+                echo "should_close=false" >> $GITHUB_OUTPUT
+                echo "comment=@${{ env.AUTHOR }} Thank you for contributing. This is a minor contribution, but good quality. Please review n8n's [contributing](${{ env.CONTRIBUTING_LINK }}) guidelines, and keep low-effort contributions to a minimum." >> GITHUB_OUTPUT              
+              fi
               ;;
             "duplicate")
               echo "comment=@${{ env.AUTHOR }} This duplicates another issue or PR, or the work was already done elsewhere. Please review n8n's [contributing](${{ env.CONTRIBUTING_LINK }}) guidelines." >> $GITHUB_OUTPUT
