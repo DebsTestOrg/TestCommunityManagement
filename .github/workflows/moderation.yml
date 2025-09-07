@@ -61,7 +61,7 @@ jobs:
               -u "${{ secrets.WEBHOOK_USER}}:${{ secrets.WEBHOOK_PASSWORD }}" \
               -H "Content-Type: application/json" \
               -d '{"user": "${{ env.AUTHOR }}"}' \
-              "https://n8n.deborahwrites.com/webhook-test/github-moderation-blocklist")
+              "${{ secrets.WEBHOOK_URL}}")
               if [ "$response" = "true" ]; then
                 echo "should_close=true" >> $GITHUB_OUTPUT
                 echo "comment=@${{ env.AUTHOR }} Thank you for contributing. This is a minor contribution, but good quality. However, due to multiple low-effort contributions, you are now blocked. Please review n8n's [contributing](${{ env.CONTRIBUTING_LINK }}) guidelines to understand more" >> $GITHUB_OUTPUT
