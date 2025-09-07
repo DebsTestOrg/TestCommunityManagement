@@ -63,8 +63,8 @@ jobs:
               -d '{"user": "${{ env.AUTHOR }}"}' \
               "${{ secrets.WEBHOOK_URL}}")
               if [ "$response" = "true" ]; then
-                echo "should_close=true" >> $GITHUB_OUTPUT
                 echo "comment=@${{ env.AUTHOR }} Thank you for contributing. This is a minor contribution, but good quality. However, due to multiple low-effort contributions, you are now blocked. Please review n8n's [contributing](${{ env.CONTRIBUTING_LINK }}) guidelines to understand more" >> $GITHUB_OUTPUT
+                echo "should_close=true" >> $GITHUB_OUTPUT
                 curl -L \
                 -X PUT \
                 -H "Accept: application/vnd.github+json" \
@@ -72,8 +72,8 @@ jobs:
                 -H "X-GitHub-Api-Version: 2022-11-28" \
                 "https://api.github.com/orgs/${{ env.ORG_NAME }}/blocks/${{ env.AUTHOR }}"
               elif [ "$response" = "false" ]; then
-                echo "should_close=false" >> $GITHUB_OUTPUT
-                echo "comment=@${{ env.AUTHOR }} Thank you for contributing. This is a minor contribution, but good quality. Please review n8n's [contributing](${{ env.CONTRIBUTING_LINK }}) guidelines, and keep low-effort contributions to a minimum." >> GITHUB_OUTPUT              
+                echo "comment=@${{ env.AUTHOR }} Thank you for contributing. This is a minor contribution, but good quality. Please review n8n's [contributing](${{ env.CONTRIBUTING_LINK }}) guidelines, and keep low-effort contributions to a minimum." >> GITHUB_OUTPUT
+                echo "should_close=false" >> $GITHUB_OUTPUT              
               fi
               ;;
             "duplicate")
