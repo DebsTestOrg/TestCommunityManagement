@@ -62,7 +62,7 @@ jobs:
               curl -X POST \
               -u "${{ secrets.WEBHOOK_USER}}:${{ secrets.WEBHOOK_PASSWORD }}" \
               -H "Content-Type: application/json" \
-              -d '{"user": ${{ env.AUTHOR }}}' \
+              -d '{"user": "${{ env.AUTHOR }}"}' \
               "https://n8n.deborahwrites.com/webhook-test/github-moderation-blocklist"
               ;;
             "duplicate")
