@@ -56,6 +56,15 @@ jobs:
               echo "comment=@${{ env.AUTHOR }} This is a minor contribution with quality problems. Please review n8n's [contributing](${{ env.CONTRIBUTING_LINK }}) guidelines." >> $GITHUB_OUTPUT
               echo "should_close=true" >> $GITHUB_OUTPUT
               ;;
+            "low-effort-usable")
+              echo "comment=@${{ env.AUTHOR }} Thank you for contributing. This is a minor contribution, but good quality. Please review n8n's [contributing](${{ env.CONTRIBUTING_LINK }}) guidelines, and keep low-effort contributions to a minimum." >> $GITHUB_OUTPUT
+              echo "should_close=false" >> $GITHUB_OUTPUT
+              curl -X POST \
+              -u "${{ secrets.WEBHOOK_USER}}:${{ secrets.WEBHOOK_PASSWORD }}" \
+              -H "Content-Type: application/json" \
+              -d '{"user": ${{ env.AUTHOR }}}' \
+              "https://n8n.deborahwrites.com/webhook-test/github-moderation-blocklist"
+              ;;
             "duplicate")
               echo "comment=@${{ env.AUTHOR }} This duplicates another issue or PR, or the work was already done elsewhere. Please review n8n's [contributing](${{ env.CONTRIBUTING_LINK }}) guidelines." >> $GITHUB_OUTPUT
               echo "should_close=true" >> $GITHUB_OUTPUT
