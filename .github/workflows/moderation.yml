@@ -12,7 +12,7 @@ on:
       - labeled
 jobs:
   handle-labels:
-    if: contains(fromJSON('["block", "spam", "ai-slop", "low-effort-bad", "low-effort-usable", "duplicate", "dev-cancelled", "old-course", "pending-dev", "in-next-release" ]'), github.event.label.name)
+    if: contains(fromJSON('["block", "spam", "ai-slop", "low-effort-unusable", "low-effort-usable", "duplicate", "dev-cancelled", "old-course", "pending-dev", "in-next-release" ]'), github.event.label.name)
     runs-on: ubuntu-latest
     permissions:
       issues: write
